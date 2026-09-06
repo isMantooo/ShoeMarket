@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Intestazione -->
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <h2 class="fw-bold m-0 text-white">I tuoi Preferiti ♥</h2>
+    </div>
+
+    <!-- Se ci sono preferiti, stampiamo la griglia -->
+    {% if preferiti %}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+            
+            {% for preferito in preferiti %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm rounded-4 position-relative overflow-hidden shoe-card bg-white {% if not preferito.prodotto.disponibile %}bg-light{% endif %}">
+                    
+                    {% if not preferito.prodotto.disponibile %}
+                        <div class="position-absolute top-50 start-50 translate-middle z-3 w-100 text-center">
+                            <span class="badge bg-secondary fs-6 px-3 py-2 shadow-sm text-uppercase tracking-wide">Non disponibile</span>
+                        </div>
+                    {% endif %}
+                    
+                    <img src="{{ preferito.prodotto.immagine.url }}" class="card-img-top object-fit-cover z-1" alt="{{ preferito.prodotto.nome }}" 
+                         style="height: 220px; {% if not preferito.prodotto.disponibile %}filter: grayscale(100%); opacity: 0.5;{% endif %}">
+                    
+                    <div class="card-body p-3 d-flex flex-column z-2">
+                        <h5 class="card-title text-dark fw-bold mb-1">€ {{ preferito.prodotto.prezzo }}</h5>
+                        <p class="card-text text-dark fw-bold mb-1 text-truncate" style="font-size: 1.05rem;" title="{{ preferito.prodotto.nome }}">{{ preferito.prodotto.nome }}</p>
+                        <p class="card-text text-secondary small mb-0">Taglia: {{ preferito.prodotto.taglia }}</p>
+                        
+                        <a href="{% url 'dettagli_prodotto' preferito.prodotto.pk %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        
+    <!-- Se non ci sono preferiti, stampiamo il riquadro centrato a tutta larghezza -->
+    {% else %}
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-8 text-center py-5">
+                <div class="p-5 bg-white rounded-4 shadow text-dark">
+                    <h4 class="fw-bold mb-3">Nessun preferito salvato</h4>
+                    <p class="text-muted">Non hai ancora aggiunto nessuna scarpa alla tua lista desideri.</p>
+                    <a href="{% url 'catalogo' %}" class="btn btn-vinted mt-3">Esplora il catalogo</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+</div>
+{% endblock %}

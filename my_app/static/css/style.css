@@ -1,0 +1,138 @@
+/* =========================================
+   BASE LAYOUT & COLORI GLOBALI
+   ========================================= */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #09b1ba; /* Sfondo verde acqua per tutto il sito */
+    color: #ffffff; /* Testo di base bianco per contrastare lo sfondo */
+}
+
+/* Rende bianchi i titoli che si trovano fuori dalle card bianche */
+h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+}
+
+/* Rende grigio-chiaro i sottotitoli (text-muted) sullo sfondo colorato */
+p.text-muted:not(.card p, .bg-white p) {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Schiarisce le linee di separazione fuori dalle card */
+.border-bottom {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+
+/* =========================================
+   COMPONENTI UI E CARD
+   ========================================= */
+/* Riporta il testo al colore scuro dentro i box bianchi, le card e gli alert */
+.bg-white, .card, .vinted-form label, .alert {
+    color: #212529 !important;
+}
+
+.text-vinted {
+    color: #09b1ba !important;
+}
+
+.btn-vinted {
+    background-color: #09b1ba;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-vinted:hover {
+    background-color: #079aa2;
+    color: white;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.75rem;
+}
+
+/* Effetto hover per le card delle scarpe */
+.shoe-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.shoe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+
+/* =========================================
+   STILE PER I FORM DI DJANGO
+   ========================================= */
+.vinted-form p {
+    margin-bottom: 1.5rem;
+}
+
+.vinted-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.vinted-form input[type="text"],
+.vinted-form input[type="number"],
+.vinted-form input[type="password"],
+.vinted-form input[type="email"],
+.vinted-form select,
+.vinted-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    font-family: inherit;
+    transition: all 0.2s ease-in-out;
+}
+
+.vinted-form input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: white;
+    border: 1px dashed #09b1ba;
+    border-radius: 8px;
+    color: #666;
+}
+
+.vinted-form input:focus,
+.vinted-form select:focus,
+.vinted-form textarea:focus {
+    border-color: #09b1ba;
+    outline: none;
+    box-shadow: 0 0 0 0.25rem rgba(9, 177, 186, 0.25);
+    background-color: white;
+}
+
+.vinted-form .helptext {
+    display: block;
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+/* Mette in risalto il nome del prodotto nelle card */
+.shoe-card .text-truncate {
+    font-weight: 700 !important;       /* Grassetto marcato */
+    font-size: 1.05rem !important;     /* Leggermente più grande */
+    color: #111 !important;            /* Nero intenso invece che grigio */
+    margin-top: 0.25rem;
+}
+
+/* Rimuove le freccette dagli input di tipo number */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type="number"] {
+    -webkit-appearance: textfield; /* Safari e vecchie versioni WebKit */
+    -moz-appearance: textfield;    /* Firefox */
+    appearance: textfield;         /* Standard universale W3C */
+}

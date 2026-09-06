@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShoeMarket{% endblock %}</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS (tramite CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Il tuo file CSS personalizzato -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Navbar bianca con leggera ombra per staccare dallo sfondo -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-3">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand text-vinted" href="{% url 'catalogo' %}">ShoeMarket</a>
+
+            <!-- Pulsante menu per smartphone -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Voci del menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'catalogo' %}">Catalogo</a>
+                    </li>
+
+                    {% if request.user.is_authenticated %}
+                        
+                        <!-- Voci per l'Acquirente -->
+                        {% if request.user.ruolo == 'acquirente' %}
+                            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'preferiti' %}">Preferiti</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'storico_ordini' %}">I miei ordini</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'consigliati' %}">Consigliati</a></li>
+                        {% endif %}
+
+                        <!-- Voci per il Venditore -->
+                        {% if request.user.ruolo == 'venditore' %}
+                            <li class="nav-item"><a class="nav-link text-dark" href="{% url 'venditore' %}">I miei prodotti</a></li>
+                            <li class="nav-item">
+                                <a class="btn btn-vinted px-3 py-2" href="{% url 'nuovo_prodotto' %}">Vendi un prodotto</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Menu Utente Loggato (Dropdown) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
+                                Ciao, {{ request.user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-2">
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger">Esci</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% else %}
+                        <!-- Utente non loggato -->
+                        <li class="nav-item">
+                            <a class="nav-link text-vinted fw-bold" href="{% url 'registrazione' %}">Registrati</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-vinted px-4" href="{% url 'login' %}">Accedi</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenitore Principale con margine sopra e sotto (my-5) -->
+    <main class="container my-5">
+
+        <!-- SISTEMA DI NOTIFICHE (MESSAGES) -->
+        <div id="blocco-notifiche-ajax">
+            {% if messages %}
+            <div class="container mt-4">
+                {% for message in messages %}
+            
+                    {% if message.tags == 'success' %}
+                        <!-- Avviso di Successo: Barra verde laterale -->
+                        <div class="alert bg-white border-0 border-start border-4 border-success shadow-sm alert-dismissible fade show text-dark" role="alert">
+                            <span class="text-success fw-bold me-2">✅</span> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                
+                    {% elif message.tags == 'error' %}
+                        <!-- Avviso di Errore: Barra rossa laterale -->
+                        <div class="alert bg-white border-0 border-start border-4 border-danger shadow-sm alert-dismissible fade show text-dark" role="alert">
+                            <span class="text-danger fw-bold me-2">⚠️</span> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                
+                    {% else %}
+                        <!-- Altri avvisi (es. info, warning): Barra grigia laterale -->
+                        <div class="alert bg-white border-0 border-start border-4 border-secondary shadow-sm alert-dismissible fade show text-dark" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+            
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Qui verranno iniettate le tue viste (es. catalogo, dettaglio, ecc.) -->
+        {% block content %}
+        {% endblock %}
+        
+    </main>
+
+    <!-- Bootstrap JS (necessario per il menu mobile, gli alert e i dropdown) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- IL TUO FILE JAVASCRIPT -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

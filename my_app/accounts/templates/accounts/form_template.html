@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    
+    <div class="col-12 col-md-8 col-lg-5">
+        
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm">
+            
+            <h3 class="fw-bold text-center mb-4">Registrazione</h3>
+            
+            <form method="post" action="" class="vinted-form">
+                {% csrf_token %}
+                
+                {{ form.as_p }}
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-vinted btn-lg">Registrati</button>
+                </div>
+                
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

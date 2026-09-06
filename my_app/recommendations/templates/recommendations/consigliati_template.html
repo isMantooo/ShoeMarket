@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Intestazione -->
+    <div class="mb-4 pb-2 border-bottom">
+        <center>
+        <h2 class="fw-bold m-0">Consigliati per te ✨</h2>
+        </center>
+    </div>
+
+    <!-- Se ci sono prodotti, stampiamo la griglia row-cols -->
+    {% if prodotti %}
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+            
+            {% for prodotto in prodotti %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm rounded-4 position-relative overflow-hidden shoe-card bg-white">
+                    <img src="{{ prodotto.immagine.url }}" class="card-img-top object-fit-cover" alt="{{ prodotto.nome }}" style="height: 220px;">
+                    <div class="card-body p-3 d-flex flex-column">
+                        <h5 class="card-title fw-bold mb-1">€ {{ prodotto.prezzo }}</h5>
+                        <p class="card-text text-dark fw-bold mb-1 text-truncate" style="font-size: 1.05rem;" title="{{ prodotto.nome }}">{{ prodotto.nome }}</p>
+                        <p class="card-text text-secondary small mb-2">Taglia: {{ prodotto.taglia }}</p>
+                        
+                        <div class="mt-auto">
+                            {% if prodotto.valutazione_media == "Nessuna recensione" %}
+                                <span class="text-muted small">Nessuna recensione</span>
+                            {% else %}
+                                <span class="text-warning small fw-bold">⭐ {{ prodotto.valutazione_media }}</span>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'dettagli_prodotto' prodotto.pk %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        
+    <!-- Se non ci sono prodotti, stampiamo il blocco VUOTO al centro -->
+    {% else %}
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-8 text-center py-5">
+                <div class="p-5 bg-white rounded-4 shadow text-dark">
+                    <h4 class="fw-bold mb-3">Nessun consiglio disponibile</h4>
+                    <p class="text-muted">Non abbiamo ancora abbastanza dati sulle tue preferenze. Esplora il catalogo o aggiungi qualche prodotto ai preferiti per ricevere consigli personalizzati!</p>
+                    <a href="{% url 'catalogo' %}" class="btn btn-vinted mt-3">Esplora il catalogo</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+</div>
+{% endblock %}

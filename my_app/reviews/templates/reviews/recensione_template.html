@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    
+    <!-- Colonna centrata per contenere il form -->
+    <div class="col-12 col-md-8 col-lg-5">
+        
+        <!-- Il riquadro bianco in stile Vinted -->
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm">
+            
+            <h3 class="fw-bold text-center mb-2">Lascia una recensione</h3>
+            <p class="text-center text-muted mb-4 small">Condividi la tua esperienza con questo articolo e aiuta gli altri utenti.</p>
+            
+            <!-- Aggiungiamo class="vinted-form" per agganciare il CSS di style.css -->
+            <form method="post" action="" class="vinted-form">
+                
+                {% csrf_token %}
+                
+                <!-- Django genererà i campi (voto, commento) qui dentro -->
+                {{ form.as_p }}
+                
+                <!-- Pulsante a tutta larghezza -->
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-vinted btn-lg">Pubblica recensione</button>
+                </div>
+                
+            </form>
+            
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
