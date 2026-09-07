@@ -23,6 +23,6 @@ def storico_ordini(request):
     if not(request.user.is_authenticated and request.user.ruolo == 'acquirente'):
         return redirect('catalogo')
 
-    lista_ordini = Ordine.objects.filter(acquirente=request.user)
+    lista_ordini = Ordine.objects.filter(acquirente=request.user).order_by('-data_acquisto')
 
     return render(request, 'orders/storico_ordini_template.html', {'ordini': lista_ordini})

@@ -23,7 +23,7 @@ def preferiti_view(request):
     if not (request.user.is_authenticated and request.user.ruolo == 'acquirente'):
         return redirect('catalogo')
     
-    lista_preferiti = Preferito.objects.filter(acquirente=request.user)
+    lista_preferiti = Preferito.objects.filter(acquirente=request.user).order_by('-prodotto__disponibile','-data_aggiunta')
     
     return render(request, 'favorites/preferiti_template.html', {'preferiti': lista_preferiti})
     

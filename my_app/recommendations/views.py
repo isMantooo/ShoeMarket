@@ -16,11 +16,7 @@ def consigliati_view(request):
 
     conteggio_c = Counter(categorie_tot)
     best_categoria = conteggio_c.most_common(1)
-
-    if best_categoria:
-        categoria_scelta = best_categoria[0][0]
-    else:
-        categoria_scelta = None
+    categoria_scelta = best_categoria[0][0] if best_categoria else None
 
     taglie_preferiti = Preferito.objects.filter(acquirente=request.user).values_list('prodotto__taglia', flat=True)
     taglie_ordini = Ordine.objects.filter(acquirente=request.user).values_list('prodotto__taglia', flat=True)
@@ -28,11 +24,7 @@ def consigliati_view(request):
 
     conteggio_t = Counter(taglie_tot)
     best_taglia = conteggio_t.most_common(1)
-
-    if best_taglia:
-        taglia_scelta = best_taglia[0][0]
-    else:
-        taglia_scelta = None
+    taglia_scelta = best_taglia[0][0] if best_taglia else None
 
     if not categoria_scelta:
         categorie_ricerche = Ricerca.objects.filter(acquirente=request.user).exclude(categoria='').exclude(categoria__isnull=True).values_list('categoria', flat=True)
@@ -51,14 +43,22 @@ def consigliati_view(request):
     if not categoria_scelta and not taglia_scelta:
         consigliati = Prodotto.objects.none()
     else:
-        consigliati = Prodotto.objects.filter(disponibile=True)
+        consigliati_categoria = Prodotto.objects.none()
         if categoria_scelta:
-            consigliati = consigliati.filter(categoria__nome=categoria_scelta)
+            consigliati_categoria = Prodotto.objects.filter(disponibile=True, categoria__nome=categoria_scelta)
+
+        consigliati_taglia = Prodotto.objects.none()
         if taglia_scelta:
-            consigliati = consigliati.filter(taglia=taglia_scelta)
+            consigliati_taglia = Prodotto.objects.filter(disponibile=True, taglia=taglia_scelta)
+
+        id_categoria = list(consigliati_categoria.values_list('id', flat=True))
+        id_taglia = list(consigliati_taglia.values_list('id', flat=True))
+        id_uniti = list(set(id_categoria + id_taglia))
+
+        consigliati = Prodotto.objects.filter(id__in=id_uniti)
 
         prodotti_preferiti_id = Preferito.objects.filter(acquirente=request.user).values_list('prodotto__id', flat=True)
         prodotti_ordinati_id = Ordine.objects.filter(acquirente=request.user).values_list('prodotto__id', flat=True)
-        consigliati = consigliati.exclude(id__in=list(prodotti_preferiti_id)+list(prodotti_ordinati_id))
+        consigliati = consigliati.exclude(id__in=list(prodotti_preferiti_id) + list(prodotti_ordinati_id))
 
     return render(request, 'recommendations/consigliati_template.html', {'prodotti': consigliati})

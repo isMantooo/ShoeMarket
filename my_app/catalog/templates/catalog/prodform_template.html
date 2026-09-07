@@ -3,26 +3,20 @@
 {% block content %}
 <div class="container d-flex justify-content-center">
     
-    <!-- Colonna centrata per contenere il form -->
     <div class="col-12 col-md-8 col-lg-6">
         
-        <!-- Riquadro bianco con ombreggiatura -->
         <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm text-dark">
             <h3 class="fw-bold text-center mb-4">Vendi un articolo</h3>
             
-            <!-- Il form: l'enctype è vitale per caricare le immagini -->
             <form method="post" action="" enctype="multipart/form-data" class="vinted-form">
                 {% csrf_token %}
                 
-                <!-- Contenitore per l'anteprima dell'immagine (Inizialmente nascosto con d-none) -->
                 <div class="text-center mb-4">
                     <img id="imagePreview" src="#" alt="Anteprima Immagine" class="img-fluid rounded-3 shadow-sm d-none" style="max-height: 250px; object-fit: contain;">
                 </div>
 
-                <!-- I campi (nome, prezzo, immagine, ecc.) generati da Django -->
                 {{ form.as_p }}
                 
-                <!-- Pulsante per inviare il form a tutta larghezza -->
                 <div class="d-grid gap-2 mt-4">
                     <button type="submit" class="btn btn-vinted btn-lg">Pubblica annuncio</button>
                 </div>

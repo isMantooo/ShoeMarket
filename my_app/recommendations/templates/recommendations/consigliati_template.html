@@ -3,14 +3,12 @@
 {% block content %}
 <div class="container">
     
-    <!-- Intestazione -->
     <div class="mb-4 pb-2 border-bottom">
         <center>
         <h2 class="fw-bold m-0">Consigliati per te ✨</h2>
         </center>
     </div>
 
-    <!-- Se ci sono prodotti, stampiamo la griglia row-cols -->
     {% if prodotti %}
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
             
@@ -38,7 +36,6 @@
             
         </div>
         
-    <!-- Se non ci sono prodotti, stampiamo il blocco VUOTO al centro -->
     {% else %}
         <div class="row justify-content-center mt-4">
             <div class="col-12 col-md-8 text-center py-5">

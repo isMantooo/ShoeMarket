@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import RecensioneForm
 from catalog.models import Prodotto
 from .models import Recensione
+
 # Create your views here.
 def recensione_view(request, pk):
     if not (request.user.is_authenticated and request.user.ruolo == 'acquirente'):
