@@ -14,11 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.shortcuts import redirect
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import home 
+
+def gestisci_404(request, exception):
+    messages.error(request, "La pagina richiesta non esiste.")
+    return redirect('catalogo')
+
+handler404 = gestisci_404
 
 urlpatterns = [
     path('', home, name='home'),
